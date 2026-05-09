@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
 # -------------------------------------------
-# Produits du shop
+# Produits du shop 
 products = [
     {"name": "Smart Watch", "price": 120, "image": "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b"},
     {"name": "Laptop", "price": 700, "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8"},
