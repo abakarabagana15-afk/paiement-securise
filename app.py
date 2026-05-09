@@ -21,6 +21,7 @@ products = [
 # Base de données
 def init_db():
     conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect("database.db", check_same_thread=False)
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -100,9 +101,14 @@ def payment():
         "Smartphone": 400
     }
 
-    # 🔥 CAS 1 : ARRIVÉE DEPUIS LE BOUTON (GET)
+    # -----------------------------------
+    # GET = choix produit
     if request.method == "GET":
+
         product = request.args.get("product")
+
+        if not product:
+            return redirect("/shop")
 
         if product not in product_prices:
             return "Produit invalide"
@@ -110,11 +116,14 @@ def payment():
         session["product"] = product
         session["amount"] = product_prices[product]
 
-        return render_template("payment.html",
-                               product=product,
-                               amount=product_prices[product])
+        return render_template(
+            "payment.html",
+            product=product,
+            amount=product_prices[product]
+        )
 
-    # 🔥 CAS 2 : FORMULAIRE ENVOYÉ (POST)
+    # -----------------------------------
+    # POST = formulaire paiement
     if request.method == "POST":
 
         session["name"] = request.form["name"]
@@ -136,6 +145,7 @@ def otp():
         user_otp = request.form["otp"]
 
         conn = sqlite3.connect("database.db")
+        conn = sqlite3.connect("database.db", check_same_thread=False)
         cursor = conn.cursor()
 
         if user_otp == session.get("otp"):
@@ -197,6 +207,7 @@ def dashboard():
         return redirect("/login")
 
     conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect("database.db", check_same_thread=False)
     cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM transactions")
