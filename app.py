@@ -122,7 +122,7 @@ def payment():
         "Smartphone": 400
     }
 
-    # -----------------------------------
+    # ----------------------------------- 
     # GET = choix produit
     if request.method == "GET":
 
